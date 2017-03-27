@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+{% block body %}
+    <table border="1">
+    <caption>Tasks</caption>
+    <thead>
+    <tr>
+    <td>Task</td>
+    <td>Controller</td>
+    <td>Target</td>
+    <td>Action</td>
+        <td>Timestamp</td>
+    <td>Done</td>
+        <td>Modded</td>
+    <td>Notes</td>
+        <td></td>
+    </tr>
+    </thead>
+    <tbody>
+{% for task in tasks %}
+    <tr>
+    <td>{{ task.key.integer_id() }}</td>
+    <td>{{ task.controller }}</td>
+    <td>{{ task.target }}</td>
+    <td>{{ task.action }}</td>
+        <td>{{ task.timestamp }}</td>
+        {% if task.done %}
+        <td style="color: green">{{ task.done }}</td>
+        {% else %}
+        <td style="color: red">{{ task.done }}</td>
+        {% endif %}
+    <td>{{ task.modded }}</td>
+    <td>{{ task.notes }}</td>
+    <td><a href="/admin/deltask?id={{ task.key.integer_id() }}">Delete</a></td>
+    </tr>
+{% else %}
+    <tr><td style="color: red">No tasks found</td></tr>
+{% endfor %}
+    </tbody>
+    </table>
+{% endblock %}

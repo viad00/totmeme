@@ -1,0 +1,2 @@
+import totmeme
+totmeme.main()

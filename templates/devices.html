@@ -1,0 +1,29 @@
+{% extends 'layout.html' %}
+{% block body %}
+    <table border="1">
+    <caption>Devices</caption>
+    <thead>
+    <tr>
+    <td>device</td>
+    <td>devicename</td>
+        <td>Timestamp</td>
+    <td>Lastseen</td>
+        <td></td>
+    </tr>
+    </thead>
+    <tbody>
+{% for device in devices %}
+    <tr>
+    <td>{{ device.key.integer_id() }}</td>
+    <td>{{ device.name }}</td>
+        <td>{{ device.timestamp }}</td>
+        <td>{{ device.lastseen }}</td>
+    <td><a href="/admin/deldevice?id={{ device.key.integer_id() }}">Delete</a></td>
+    </tr>
+{% else %}
+    <tr><td style="color: red">No devices found</td></tr>
+{% endfor %}
+    </tbody>
+    </table>
+    <a href="/admin/adddevice">Add device</a>
+{% endblock %}

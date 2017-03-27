@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+{% block head %}
+    <meta charset="UTF-8">
+    <title>Computer Controller</title>
+    <p>
+        <a href="/admin">Home</a>
+        <a href="/admin/addtask">Add task</a>
+        <a href="/admin/tasks">View tasks</a>
+        <a href="/admin/devices">View devices</a>
+        <a href="/admin/server">View servers</a>
+        <a href="/admin/users">View users</a>
+    </p>
+    {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+{% endblock %}
+{% block body %}
+
+{% endblock %}
