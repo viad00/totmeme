@@ -24,3 +24,10 @@ class Device(ndb.Model):
     name = ndb.StringProperty()
     timestamp = ndb.DateTimeProperty(auto_now_add=True)
     lastseen = ndb.DateTimeProperty()
+
+class Server(ndb.Model):
+    name = ndb.StringProperty()
+    pin = ndb.StringProperty()
+    controller = ndb.StringProperty()
+    timestamp = ndb.DateTimeProperty(auto_now_add=True)
+    lastseen = ndb.DateTimeProperty()

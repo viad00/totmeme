@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+{% block body %}
+    <table border="1">
+    <caption>Servers</caption>
+    <thead>
+    <tr>
+    <td>Server</td>
+    <td>Servername</td>
+        <td>Controller</td>
+        <td>Pin</td>
+        <td>Timestamp</td>
+    <td>Lastseen</td>
+        <td></td>
+    </tr>
+    </thead>
+    <tbody>
+{% for server in servers %}
+    <tr>
+    <td>{{ server.key.integer_id() }}</td>
+    <td>{{ server.name }}</td>
+        <td>{{ server.controller }}</td>
+        <td>{{ server.pin }}</td>
+        <td>{{ server.timestamp }}</td>
+        <td>{{ server.lastseen }}</td>
+    <td><a href="/admin/delserver?id={{ server.key.integer_id() }}">Delete</a></td>
+    </tr>
+{% else %}
+    <tr><td style="color: red">No servers found</td></tr>
+{% endfor %}
+    </tbody>
+    </table>
+    <a href="/admin/addserver">Add server</a>
+{% endblock %}

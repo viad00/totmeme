@@ -10,6 +10,11 @@ indexes:
 # automatically uploaded to the admin console when you next deploy
 # your application using appcfg.py.
 
+- kind: Server
+  properties:
+  - name: controller
+  - name: lastseen
+
 - kind: Task
   properties:
   - name: controller

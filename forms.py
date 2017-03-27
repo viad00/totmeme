@@ -13,3 +13,8 @@ class AddUser(FlaskForm):
 
 class AddDevice(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
+
+class AddServer(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    controller = StringField('Controller', validators=[DataRequired()])
+    pin = StringField('Controller pin', validators=[DataRequired()])
