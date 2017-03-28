@@ -216,20 +216,17 @@ def routines():
         print 'Caught exp at get_routines: ' + str(e)
         return 'ERROR CHECK'
     try:
-        # TODO: Check previous tasks
+        tasken = models.Task.query(models.Task.controller == controller, models.Task.done == False).order(
+            models.Task.timestamp)
         dev = models.Server.query(models.Server.lastseen < datetime.datetime.now() - datetime.timedelta(minutes=4),
                                   models.Server.controller == controller)
-        if dev.count() > 0:
+        device = models.Device.query(models.Device.lastseen < datetime.datetime.now() - datetime.timedelta(minutes=4)).count()
+        if dev.count() > 0 and tasken.count() < 1 and device < 1:
             for de in dev.fetch():
                 models.Task(controller=de.controller, target=de.pin, action='stop').put()
                 models.Task(controller=de.controller, target=de.pin, action='start').put()
                 models.Visit(user_ip=request.remote_addr, action='ADD TASK TO START ' + de.name).put()
-    except Exception as e:
-        print 'Caught exp at get_routines: ' + str(e)
-        return 'ERROR CHECK SERVER'
-    try:
-        tasken = models.Task.query(models.Task.controller == controller, models.Task.done == False).order(
-            models.Task.timestamp).fetch()
+        tasken = tasken.fetch()
     except Exception as e:
         print 'Caught exp at get_routines: ' + str(e)
         return 'ERROR DATABASE'
@@ -260,6 +257,17 @@ def callback():
             models.Visit(user_ip=request.remote_addr, action='REPORTED ' + str(tas.key.integer_id())).put()
             return 'OK'
         except Exception:
+            return 'ERROR OK'
+    elif action == 'server':
+        try:
+            name = request.args.get('name')
+            serves = models.Server.query(models.Server.name == name).fetch()
+            for server in serves:
+                server.lastseen = datetime.datetime.now()
+                server.put()
+            return 'OK'
+        except Exception as e:
+            print 'Error call server: ' + str(e)
             return 'ERROR OK'
 
 
@@ -313,11 +321,6 @@ def deluser():
         models.Visit(user_ip=request.remote_addr, action='DEL USER FAILED ' + str(id)).put()
         flash('Delete failed! ' + str(id))
     return redirect('/admin/users')
-
-
-@app.route('/server_report')  # TODO: Add server report job
-def server_report():
-    return 'NOT IMPLEMENTED YET'
 
 
 if __name__ == '__main__':
