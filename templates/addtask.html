@@ -1,21 +1,17 @@
 {% extends 'layout.html' %}
 {% block body %}
+    <title>Add task - Totmeme</title>
 <form method="POST" action="">
     {{ form.csrf_token }}
-    <table>
-        <tr>
-            <td>{{ form.controller.label }}</td>
-            <td>{{ form.controller(size=20) }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.target.label }}</td>
-            <td>{{ form.target(size=20) }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.action.label }}</td>
-            <td>{{ form.action(size=20) }}</td>
-        </tr>
-    </table>
-    <p><input type="submit" value="Sumbit"></p>
+    {{ form.controller.label }}
+    {{ form.controller(size=20, class="form-control", type="text", style="max-width: 15rem") }}
+    <p></p>
+    {{ form.target.label }}
+    {{ form.target(size=20, class="form-control", type="text", style="max-width: 15rem") }}
+    <p></p>
+    {{ form.action.label }}
+    {{ form.action(size=20, class="form-control", type="text", style="max-width: 15rem") }}
+    <p></p>
+    <button class="btn btn-outline-primary" type="submit">Submit</button>
 </form>
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 {% block body %}
-    <table border="1">
-    <caption>Servers</caption>
+    <title>Servers - Totmeme</title>
+    <table class="table table-bordered table-striped">
     <thead>
     <tr>
     <td>Server</td>
@@ -22,12 +22,12 @@
         <td>{{ server.pin }}</td>
         <td>{{ server.timestamp }}</td>
         <td>{{ server.lastseen }}</td>
-    <td><a href="/admin/delserver?id={{ server.key.integer_id() }}">Delete</a></td>
+    <td><a class="btn btn-secondary" href="/admin/delserver?id={{ server.key.integer_id() }}">Delete</a></td>
     </tr>
 {% else %}
     <tr><td style="color: red">No servers found</td></tr>
 {% endfor %}
     </tbody>
     </table>
-    <a href="/admin/addserver">Add server</a>
+    <a class="btn btn-secondary" href="/admin/addserver">Add server</a>
 {% endblock %}

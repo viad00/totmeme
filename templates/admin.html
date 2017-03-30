@@ -1,16 +1,17 @@
 {% extends 'layout.html' %}
 {% block body %}
+    <title>Admin - Totmeme</title>
     <h1>Problems:</h1>
     {% for text in problems %}
-        <p style="color: red">{{ text }}</p>
+        <p class="alert alert-danger">{{ text }}</p>
     {% else %}
-        <p style="color: green">No problems found</p>
+        <p class="alert alert-success">No problems found</p>
     {% endfor %}
-    <h1>Last login(10):</h1>
+    <h1>Last 10 queries:</h1>
     {% for text in logins %}
         <p>{{ text }}</p>
     {% else %}
-    <p style="color: red">No login(s) found!</p>
+    <p style="color: red">No queries found!</p>
     {% endfor %}
-    <a href="/admin/flush_all">Flush all entries (be careful!)</a>
+    <a class="btn btn-secondary" href="/admin/flush_all">Flush all entries (be careful!)</a>
 {% endblock %}

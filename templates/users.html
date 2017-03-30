@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 {% block body %}
-    <table border="1">
-    <caption>users</caption>
+    <title>Users - Totmeme</title>
+    <table class="table table-bordered table-striped">
     <thead>
     <tr>
     <td>user</td>
@@ -18,12 +18,12 @@
     <td>{{ user.username }}</td>
         <td>{{ user.timestamp }}</td>
         <td>{{ user.lastlogin }}</td>
-    <td><a href="/admin/deluser?id={{ user.key.integer_id() }}">Delete</a></td>
+    <td><a class="btn btn-secondary" href="/admin/deluser?id={{ user.key.integer_id() }}">Delete</a></td>
     </tr>
 {% else %}
     <tr><td style="color: red">No users found</td></tr>
 {% endfor %}
     </tbody>
     </table>
-    <a href="/admin/adduser">Add user</a>
+    <a class="btn btn-secondary" href="/admin/adduser">Add user</a>
 {% endblock %}

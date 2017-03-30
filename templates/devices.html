@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 {% block body %}
-    <table border="1">
-    <caption>Devices</caption>
+    <title>Devices - Totmeme</title>
+    <table class="table table-bordered table-striped">
     <thead>
     <tr>
     <td>device</td>
@@ -18,12 +18,12 @@
     <td>{{ device.name }}</td>
         <td>{{ device.timestamp }}</td>
         <td>{{ device.lastseen }}</td>
-    <td><a href="/admin/deldevice?id={{ device.key.integer_id() }}">Delete</a></td>
+    <td><a class="btn btn-secondary" href="/admin/deldevice?id={{ device.key.integer_id() }}">Delete</a></td>
     </tr>
 {% else %}
     <tr><td style="color: red">No devices found</td></tr>
 {% endfor %}
     </tbody>
     </table>
-    <a href="/admin/adddevice">Add device</a>
+    <a class="btn btn-secondary" href="/admin/adddevice">Add device</a>
 {% endblock %}

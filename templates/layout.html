@@ -1,26 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-{% block head %}
-    <meta charset="UTF-8">
-    <title>Computer Controller</title>
-    <p>
-        <a href="/admin">Home</a>
-        <a href="/admin/addtask">Add task</a>
-        <a href="/admin/tasks">View tasks</a>
-        <a href="/admin/devices">View devices</a>
-        <a href="/admin/servers">View servers</a>
-        <a href="/admin/users">View users</a>
-    </p>
+<meta charset="UTF-8">
+    <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse fixed-top">
+      <button class="navbar-toggler navbar-toggler-right collapsed" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="/admin">Totmeme</a>
+
+      <div class="navbar-collapse collapse" id="navbarsExampleDefault" aria-expanded="false">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/tasks">Tasks</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/devices">Devices</a>
+          </li>
+            <li class="nav-item">
+            <a class="nav-link" href="/admin/servers">Servers</a>
+          </li>
+            <li class="nav-item">
+            <a class="nav-link" href="/admin/users">Users</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="container" style="padding-top: 5rem;">
     {% with messages = get_flashed_messages() %}
   {% if messages %}
-    <ul class=flashes>
     {% for message in messages %}
-      <li>{{ message }}</li>
+      <p class="alert alert-success">{{ message }}</p>
     {% endfor %}
-    </ul>
   {% endif %}
 {% endwith %}
-{% endblock %}
-{% block body %}
+    {% block body %}
 
-{% endblock %}
+    {% endblock %}
+    </div>
+<link rel="stylesheet" href="/static/bootstrap.min.css">
+<script src="/static/jquery-3.2.0.slim.min.js"></script>
+<script src="/static/bootstrap.min.js"></script>

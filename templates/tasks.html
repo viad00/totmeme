@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 {% block body %}
-    <table border="1">
-    <caption>Tasks</caption>
+    <title>Tasks - Totmeme</title>
+    <table class="table table-bordered table-striped">
     <thead>
     <tr>
     <td>Task</td>
@@ -30,11 +30,12 @@
         {% endif %}
     <td>{{ task.modded }}</td>
     <td>{{ task.notes }}</td>
-    <td><a href="/admin/deltask?id={{ task.key.integer_id() }}">Delete</a></td>
+    <td><a class="btn btn-secondary" href="/admin/deltask?id={{ task.key.integer_id() }}">Delete</a></td>
     </tr>
 {% else %}
     <tr><td style="color: red">No tasks found</td></tr>
 {% endfor %}
     </tbody>
     </table>
+    <a class="btn btn-secondary" href="/admin/addtask">Add task</a>
 {% endblock %}

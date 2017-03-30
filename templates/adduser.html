@@ -1,17 +1,14 @@
 {% extends 'layout.html' %}
 {% block body %}
+    <title>Add user - Totmeme</title>
 <form method="POST" action="">
     {{ form.csrf_token }}
-    <table>
-        <tr>
-            <td>{{ form.username.label }}</td>
-            <td>{{ form.username(size=20) }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.password.label }}</td>
-            <td>{{ form.password(size=20) }}</td>
-        </tr>
-    </table>
-    <p><input type="submit" value="Sumbit"></p>
+    {{ form.username.label }}
+    {{ form.username(size=20, class="form-control", type="text", style="max-width: 15rem") }}
+    <p></p>
+    {{ form.password.label }}
+    {{ form.password(size=20, class="form-control", type="password", style="max-width: 15rem") }}
+    <p></p>
+    <button class="btn btn-outline-primary" type="submit">Submit</button>
 </form>
 {% endblock %}
