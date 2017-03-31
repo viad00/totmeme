@@ -4,15 +4,15 @@
     <table class="table table-bordered table-striped">
     <thead>
     <tr>
-    <td>Task</td>
-    <td>Controller</td>
-    <td>Target</td>
-    <td>Action</td>
-        <td>Timestamp</td>
-    <td>Done</td>
-        <td>Modded</td>
-    <td>Notes</td>
-        <td></td>
+    <th>Task</th>
+    <th>Controller</th>
+    <th>Target</th>
+    <th>Action</th>
+        <th>Timestamp</th>
+    <th>Done</th>
+        <th>Modded</th>
+    <th>Notes</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -22,13 +22,13 @@
     <td>{{ task.controller }}</td>
     <td>{{ task.target }}</td>
     <td>{{ task.action }}</td>
-        <td>{{ task.timestamp }}</td>
+        <td>{{ task.timestamp.strftime('%d.%m.%Y %H:%M:%S') }}</td>
         {% if task.done %}
         <td style="color: green">{{ task.done }}</td>
         {% else %}
         <td style="color: red">{{ task.done }}</td>
         {% endif %}
-    <td>{{ task.modded }}</td>
+    <td>{{ task.modded.strftime('%d.%m.%Y %H:%M:%S') }}</td>
     <td>{{ task.notes }}</td>
     <td><a class="btn btn-secondary" href="/admin/deltask?id={{ task.key.integer_id() }}">Delete</a></td>
     </tr>

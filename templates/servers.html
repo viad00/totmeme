@@ -4,13 +4,13 @@
     <table class="table table-bordered table-striped">
     <thead>
     <tr>
-    <td>Server</td>
-    <td>Servername</td>
-        <td>Controller</td>
-        <td>Pin</td>
-        <td>Timestamp</td>
-    <td>Lastseen</td>
-        <td></td>
+    <th>Server</th>
+    <th>Name</th>
+        <th>Controller</th>
+        <th>Pin</th>
+        <th>Timestamp</th>
+    <th>Lastseen</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -20,8 +20,12 @@
     <td>{{ server.name }}</td>
         <td>{{ server.controller }}</td>
         <td>{{ server.pin }}</td>
-        <td>{{ server.timestamp }}</td>
+        <td>{{ server.timestamp.strftime('%d.%m.%Y %H:%M:%S') }}</td>
+        {% if server.lastseen %}
+        <td>{{ server.lastseen.strftime('%d.%m.%Y %H:%M:%S') }}</td>
+        {% else %}
         <td>{{ server.lastseen }}</td>
+        {% endif %}
     <td><a class="btn btn-secondary" href="/admin/delserver?id={{ server.key.integer_id() }}">Delete</a></td>
     </tr>
 {% else %}

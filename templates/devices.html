@@ -4,11 +4,11 @@
     <table class="table table-bordered table-striped">
     <thead>
     <tr>
-    <td>device</td>
-    <td>devicename</td>
-        <td>Timestamp</td>
-    <td>Lastseen</td>
-        <td></td>
+    <th>Device</th>
+    <th>Name</th>
+        <th>Timestamp</th>
+    <th>Lastseen</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -16,8 +16,12 @@
     <tr>
     <td>{{ device.key.integer_id() }}</td>
     <td>{{ device.name }}</td>
-        <td>{{ device.timestamp }}</td>
+        <td>{{ device.timestamp.strftime('%d.%m.%Y %H:%M:%S') }}</td>
+        {% if device.lastseen %}
+        <td>{{ device.lastseen.strftime('%d.%m.%Y %H:%M:%S') }}</td>
+        {% else %}
         <td>{{ device.lastseen }}</td>
+        {% endif %}
     <td><a class="btn btn-secondary" href="/admin/deldevice?id={{ device.key.integer_id() }}">Delete</a></td>
     </tr>
 {% else %}

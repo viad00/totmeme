@@ -8,10 +8,26 @@
         <p class="alert alert-success">No problems found</p>
     {% endfor %}
     <h1>Last 10 queries:</h1>
-    {% for text in logins %}
-        <p>{{ text }}</p>
+    <table class="table table-bordered table-striped">
+    <thead>
+    <tr>
+    <th>Action</th>
+    <th>IP</th>
+    <th>Timestamp</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for log in logins %}
+        <tr>
+        <td>{{ log.action }}</td>
+        <td>{{ log.user_ip }}</td>
+        <td>{{ log.timestamp.strftime('%d.%m.%Y %H:%M:%S') }}</td>
+        </tr>
     {% else %}
     <p style="color: red">No queries found!</p>
     {% endfor %}
+    </tbody>
+    </table>
+    <p></p>
     <a class="btn btn-secondary" href="/admin/flush_all">Flush all entries (be careful!)</a>
 {% endblock %}

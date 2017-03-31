@@ -4,11 +4,11 @@
     <table class="table table-bordered table-striped">
     <thead>
     <tr>
-    <td>user</td>
-    <td>Username</td>
-        <td>Timestamp</td>
-    <td>Lastlogin</td>
-        <td></td>
+    <th>User</th>
+    <th>Username</th>
+        <th>Timestamp</th>
+    <th>Lastlogin</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -16,8 +16,12 @@
     <tr>
     <td>{{ user.key.integer_id() }}</td>
     <td>{{ user.username }}</td>
-        <td>{{ user.timestamp }}</td>
+        <td>{{ user.timestamp.strftime('%d.%m.%Y %H:%M:%S') }}</td>
+        {% if user.lastlogin %}
+        <td>{{ user.lastlogin.strftime('%d.%m.%Y %H:%M:%S') }}</td>
+        {% else %}
         <td>{{ user.lastlogin }}</td>
+        {% endif %}
     <td><a class="btn btn-secondary" href="/admin/deluser?id={{ user.key.integer_id() }}">Delete</a></td>
     </tr>
 {% else %}

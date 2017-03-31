@@ -73,9 +73,7 @@ def admin():
                 problems.append('Server ' + de.name + ' is not seen in 4 minutes')
     except Exception as e:
         flash('cannot check: ' + str(e))
-    logins = [
-        'Time: {timestamp} Addr: {user_ip} Action: {act}'.format(timestamp=x.timestamp, user_ip=x.user_ip, act=x.action)
-        for x in models.Visit.query().order(-models.Visit.timestamp).fetch(limit=10)]
+    logins = models.Visit.query().order(-models.Visit.timestamp).fetch(limit=10)
     return render_template('admin.html', problems=problems, logins=logins)
 
 
