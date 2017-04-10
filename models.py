@@ -31,3 +31,4 @@ class Server(ndb.Model):
     controller = ndb.StringProperty()
     timestamp = ndb.DateTimeProperty(auto_now_add=True)
     lastseen = ndb.DateTimeProperty()
+    enabled = ndb.BooleanProperty(default=False)

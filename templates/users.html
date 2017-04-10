@@ -1,4 +1,15 @@
 {% extends 'layout.html' %}
+{% block javascripts %}
+    <script>
+    $(document).ready(function() {
+        moment.locale(window.navigator.userLanguage || window.navigator.language);
+        {% for server in users %}
+        $('#time-{{ server.key.integer_id() }}').text(moment("{{ server.timestamp.strftime('%Y-%m-%dT%H:%M:%SZ') }}").format('lll'));
+        $('#seen-{{ server.key.integer_id() }}').text(moment("{{ server.lastlogin.strftime('%Y-%m-%dT%H:%M:%SZ') }}").format('lll'));
+        {% endfor %}
+    });
+    </script>
+{% endblock %}
 {% block body %}
     <title>Users - Totmeme</title>
     <table class="table table-bordered table-striped">
@@ -16,9 +27,9 @@
     <tr>
     <td>{{ user.key.integer_id() }}</td>
     <td>{{ user.username }}</td>
-        <td>{{ user.timestamp.strftime('%d.%m.%Y %H:%M:%S') }}</td>
+        <td id="time-{{ user.key.integer_id() }}">{{ user.timestamp.strftime('%d.%m.%Y %H:%M:%S') }}</td>
         {% if user.lastlogin %}
-        <td>{{ user.lastlogin.strftime('%d.%m.%Y %H:%M:%S') }}</td>
+        <td id="seen-{{ user.key.integer_id() }}">{{ user.lastlogin.strftime('%d.%m.%Y %H:%M:%S') }}</td>
         {% else %}
         <td>{{ user.lastlogin }}</td>
         {% endif %}

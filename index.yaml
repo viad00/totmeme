@@ -13,6 +13,17 @@ indexes:
 - kind: Server
   properties:
   - name: controller
+  - name: enabled
+  - name: lastseen
+
+- kind: Server
+  properties:
+  - name: controller
+  - name: lastseen
+
+- kind: Server
+  properties:
+  - name: enabled
   - name: lastseen
 
 - kind: Task
