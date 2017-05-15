@@ -1,6 +1,7 @@
 import computer_control
 import time
 import urequests
+import machine
 
 def rout():
     try:
@@ -28,18 +29,25 @@ def rout():
                 except Exception as e:
                     note = 'Exeption: ' + str(e)
                     print(note)
+                    machine.reset()
                 try:
                     op = urequests.get('https://totmeme-161806.appspot.com/callback?action=done&id='+task+'&note='+note.replace(' ', '%20'))
                     print(op.text)
                     op.close()
                 except Exception:
                     print('Error set status')
+                    machine.reset()
         except Exception:
             print('not good answ')
+            machine.reset()
     except Exception:
         print('Error get')
+        machine.reset()
 
 def main(timer=120):
     while True:
         time.sleep(timer)
-        rout()
+        try:
+            rout()
+        except Exception:
+            machine.reset()
