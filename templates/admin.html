@@ -1,4 +1,14 @@
 {% extends 'layout.html' %}
+{% block javascripts %}
+    <script>
+    $(document).ready(function() {
+        moment.locale(window.navigator.userLanguage || window.navigator.language);
+        {% for log in logins %}
+        $('#time-{{ log.key.integer_id() }}').text(moment("{{ log.timestamp.strftime('%Y-%m-%dT%H:%M:%SZ') }}").format('lll'));
+        {% endfor %}
+    });
+    </script>
+{% endblock %}
 {% block body %}
     <title>Admin - Totmeme</title>
     <h1>Problems:</h1>
@@ -21,7 +31,7 @@
         <tr>
         <td>{{ log.action }}</td>
         <td>{{ log.user_ip }}</td>
-        <td>{{ log.timestamp.strftime('%d.%m.%Y %H:%M:%S') }}</td>
+        <td id="time-{{ log.key.integer_id() }}">{{ log.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}</td>
         </tr>
     {% else %}
     <p style="color: red">No queries found!</p>

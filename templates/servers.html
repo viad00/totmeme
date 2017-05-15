@@ -1,4 +1,15 @@
 {% extends 'layout.html' %}
+{% block javascripts %}
+    <script>
+    $(document).ready(function() {
+        moment.locale(window.navigator.userLanguage || window.navigator.language);
+        {% for server in servers %}
+        $('#time-{{ server.key.integer_id() }}').text(moment("{{ server.timestamp.strftime('%Y-%m-%dT%H:%M:%SZ') }}").format('lll'));
+        $('#seen-{{ server.key.integer_id() }}').text(moment("{{ server.lastseen.strftime('%Y-%m-%dT%H:%M:%SZ') }}").format('lll'));
+        {% endfor %}
+    });
+    </script>
+{% endblock %}
 {% block body %}
     <title>Servers - Totmeme</title>
     <table class="table table-bordered table-striped">
@@ -10,6 +21,7 @@
         <th>Pin</th>
         <th>Timestamp</th>
     <th>Lastseen</th>
+        <th>Enabled</th>
         <th></th>
     </tr>
     </thead>
@@ -20,13 +32,21 @@
     <td>{{ server.name }}</td>
         <td>{{ server.controller }}</td>
         <td>{{ server.pin }}</td>
-        <td>{{ server.timestamp.strftime('%d.%m.%Y %H:%M:%S') }}</td>
+        <td id="time-{{ server.key.integer_id() }}">{{ server.timestamp.strftime('%d.%m.%Y %H:%M:%S') }}</td>
         {% if server.lastseen %}
-        <td>{{ server.lastseen.strftime('%d.%m.%Y %H:%M:%S') }}</td>
+        <td id="seen-{{ server.key.integer_id() }}">{{ server.lastseen.strftime('%d.%m.%Y %H:%M:%S') }}</td>
         {% else %}
         <td>{{ server.lastseen }}</td>
         {% endif %}
-    <td><a class="btn btn-secondary" href="/admin/delserver?id={{ server.key.integer_id() }}">Delete</a></td>
+    <td>{{ server.enabled }}</td>
+    <td>
+        {% if server.enabled %}
+        <a class="btn btn-secondary" href="/admin/toggle_server?id={{ server.key.integer_id() }}">Disable</a>
+        {% else %}
+        <a class="btn btn-secondary" href="/admin/toggle_server?id={{ server.key.integer_id() }}">Enable</a>
+        {% endif %}
+        <a class="btn btn-secondary" href="/admin/delserver?id={{ server.key.integer_id() }}">Delete</a>
+    </td>
     </tr>
 {% else %}
     <tr><td style="color: red">No servers found</td></tr>

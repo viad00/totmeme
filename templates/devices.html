@@ -1,4 +1,17 @@
 {% extends 'layout.html' %}
+{% block javascripts %}
+    <script>
+    $(document).ready(function() {
+        moment.locale(window.navigator.userLanguage || window.navigator.language);
+        {% for device in devices %}
+        $('#time-{{ device.key.integer_id() }}').text(moment("{{ device.timestamp.strftime('%Y-%m-%dT%H:%M:%SZ') }}").format('lll'));
+        {% if device.lastseen %}
+        $('#seen-{{ device.key.integer_id() }}').text(moment("{{ device.lastseen.strftime('%Y-%m-%dT%H:%M:%SZ') }}").format('lll'));
+            {% endif %}
+        {% endfor %}
+    });
+    </script>
+{% endblock %}
 {% block body %}
     <title>Devices - Totmeme</title>
     <table class="table table-bordered table-striped">
@@ -16,9 +29,9 @@
     <tr>
     <td>{{ device.key.integer_id() }}</td>
     <td>{{ device.name }}</td>
-        <td>{{ device.timestamp.strftime('%d.%m.%Y %H:%M:%S') }}</td>
+        <td id="time-{{ device.key.integer_id() }}">{{ device.timestamp.strftime('%d.%m.%Y %H:%M:%S') }}</td>
         {% if device.lastseen %}
-        <td>{{ device.lastseen.strftime('%d.%m.%Y %H:%M:%S') }}</td>
+        <td id="seen-{{ device.key.integer_id() }}">{{ device.lastseen.strftime('%d.%m.%Y %H:%M:%S') }}</td>
         {% else %}
         <td>{{ device.lastseen }}</td>
         {% endif %}

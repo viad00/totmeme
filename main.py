@@ -4,6 +4,7 @@ import datetime
 import hashlib
 import forms
 import models
+from google.appengine.api import memcache
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -35,7 +36,6 @@ def login(username, password):
 
 
 def authenticate():
-    """Sends a 401 response that enables basic auth"""
     return Response(
         'Could not verify your access level for that URL.\n'
         'You have to login with proper credentials', 401,
@@ -67,10 +67,16 @@ def admin():
         if dev.count() > 0:
             for de in dev.fetch():
                 problems.append('Device ' + de.name + ' is not seen in 4 minutes')
-        dev = models.Server.query(models.Server.lastseen < datetime.datetime.now() - datetime.timedelta(minutes=4))
+        dev = models.Server.query(models.Server.lastseen < datetime.datetime.now() - datetime.timedelta(minutes=4),
+                                  models.Server.enabled == True)
         if dev.count() > 0:
             for de in dev.fetch():
                 problems.append('Server ' + de.name + ' is not seen in 4 minutes')
+        dev = models.Server.query(models.Server.lastseen > datetime.datetime.now() - datetime.timedelta(minutes=4),
+                                  models.Server.enabled == False)
+        if dev.count() > 0:
+            for de in dev.fetch():
+                problems.append('Server ' + de.name + ' is seen in 4 minutes')
     except Exception as e:
         flash('cannot check: ' + str(e))
     logins = models.Visit.query().order(-models.Visit.timestamp).fetch(limit=10)
@@ -195,6 +201,35 @@ def delserver():
         flash('Delete failed! ' + str(id))
     return redirect('/admin/servers')
 
+@app.route('/admin/toggle_server')
+@requires_auth
+def toggle_server():
+    try:
+        id = int(request.args.get('id'))
+        mod = models.Server.get_by_id(id)
+    except Exception:
+        flash('Get param failed!')
+        return redirect('/admin/servers')
+    if mod.enabled:
+        try:
+            mod.enabled = False
+            mod.put()
+            models.Visit(user_ip=request.remote_addr, action='DISABLE SERVER ' + str(id)).put()
+            flash('Successful disable of ' + str(id))
+        except Exception:
+            models.Visit(user_ip=request.remote_addr, action='DISABLE SERVER FAILED ' + str(id)).put()
+            flash('Disable failed! ' + str(id))
+        return redirect('/admin/servers')
+    else:
+        try:
+            mod.enabled = True
+            mod.put()
+            models.Visit(user_ip=request.remote_addr, action='ENABLE SERVER ' + str(id)).put()
+            flash('Successful enable of ' + str(id))
+        except Exception:
+            models.Visit(user_ip=request.remote_addr, action='ENABLE SERVER FAILED ' + str(id)).put()
+            flash('Enable failed! ' + str(id))
+        return redirect('/admin/servers')
 
 @app.route('/get_routines')
 def routines():
@@ -217,7 +252,7 @@ def routines():
         tasken = models.Task.query(models.Task.controller == controller, models.Task.done == False).order(
             models.Task.timestamp)
         dev = models.Server.query(models.Server.lastseen < datetime.datetime.now() - datetime.timedelta(minutes=4),
-                                  models.Server.controller == controller)
+                                  models.Server.controller == controller, models.Server.enabled == True)
         device = models.Device.query(models.Device.lastseen < datetime.datetime.now() - datetime.timedelta(minutes=4)).count()
         if dev.count() > 0 and tasken.count() < 1 and device < 1:
             for de in dev.fetch():

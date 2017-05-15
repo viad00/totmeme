@@ -1,4 +1,15 @@
 {% extends 'layout.html' %}
+{% block javascripts %}
+    <script>
+    $(document).ready(function() {
+        moment.locale(window.navigator.userLanguage || window.navigator.language);
+        {% for server in tasks %}
+        $('#time-{{ server.key.integer_id() }}').text(moment("{{ server.timestamp.strftime('%Y-%m-%dT%H:%M:%SZ') }}").format('lll'));
+        $('#seen-{{ server.key.integer_id() }}').text(moment("{{ server.modded.strftime('%Y-%m-%dT%H:%M:%SZ') }}").format('lll'));
+        {% endfor %}
+    });
+    </script>
+{% endblock %}
 {% block body %}
     <title>Tasks - Totmeme</title>
     <table class="table table-bordered table-striped">
@@ -22,13 +33,13 @@
     <td>{{ task.controller }}</td>
     <td>{{ task.target }}</td>
     <td>{{ task.action }}</td>
-        <td>{{ task.timestamp.strftime('%d.%m.%Y %H:%M:%S') }}</td>
+        <td id="time-{{ task.key.integer_id() }}">{{ task.timestamp.strftime('%d.%m.%Y %H:%M:%S') }}</td>
         {% if task.done %}
         <td style="color: green">{{ task.done }}</td>
         {% else %}
         <td style="color: red">{{ task.done }}</td>
         {% endif %}
-    <td>{{ task.modded.strftime('%d.%m.%Y %H:%M:%S') }}</td>
+    <td id="seen-{{ task.key.integer_id() }}">{{ task.modded.strftime('%d.%m.%Y %H:%M:%S') }}</td>
     <td>{{ task.notes }}</td>
     <td><a class="btn btn-secondary" href="/admin/deltask?id={{ task.key.integer_id() }}">Delete</a></td>
     </tr>
