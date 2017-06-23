@@ -302,6 +302,27 @@ def callback():
         except Exception as e:
             print 'Error call server: ' + str(e)
             return 'ERROR OK'
+    elif action == 'task':
+        try:
+            name = request.args.get('name')
+            controller = request.args.get('controller')
+            target = request.args.get('target')
+            action_tar = request.args.get('action_tar')
+            if models.Server.query(models.Server.name == name).count() > 0\
+                    and controller != None\
+                    and target != None\
+                    and action_tar != None:
+                mom = models.Task(controller=controller,
+                                  target=target,
+                                  action=action_tar)
+                mom.put()
+                return 'OK'
+            else:
+                print 'Error call task: ' + name + ' not in database'
+                return 'ERROR NOT AUTH'
+        except Exception as e:
+            print 'Error call task: ' + str(e)
+            return 'ERROR OK'
 
 
 @app.route('/admin/flush_all')
