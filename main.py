@@ -4,7 +4,7 @@ import datetime
 import hashlib
 import forms
 import models
-from google.appengine.api import memcache
+import ast
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -201,6 +201,7 @@ def delserver():
         flash('Delete failed! ' + str(id))
     return redirect('/admin/servers')
 
+
 @app.route('/admin/toggle_server')
 @requires_auth
 def toggle_server():
@@ -230,6 +231,7 @@ def toggle_server():
             models.Visit(user_ip=request.remote_addr, action='ENABLE SERVER FAILED ' + str(id)).put()
             flash('Enable failed! ' + str(id))
         return redirect('/admin/servers')
+
 
 @app.route('/get_routines')
 def routines():
@@ -319,6 +321,26 @@ def callback():
                 return 'OK'
             else:
                 print 'Error call task: ' + name + ' not in database'
+                return 'ERROR NOT AUTH'
+        except Exception as e:
+            print 'Error call task: ' + str(e)
+            return 'ERROR OK'
+    elif action == 'toggle':
+        try:
+            name = request.args.get('name')
+            srv_name = request.args.get('srv_name')
+            state = bool(ast.literal_eval(request.args.get('state')))
+            if models.Server.query(models.Server.name == name).count() > 0\
+                    and name != None\
+                    and state != None\
+                    and srv_name != None:
+                mod = models.Server.query(models.Server.name == srv_name)
+                for i in mod.fetch():
+                    i.enabled = state
+                    i.put()
+                    return 'OK'
+            else:
+                print 'Error call task: ' + name + ' not in database or None type'
                 return 'ERROR NOT AUTH'
         except Exception as e:
             print 'Error call task: ' + str(e)
